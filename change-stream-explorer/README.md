@@ -69,9 +69,9 @@ Here are three specific demos you can run to showcase the capabilities of Change
 
 1.  Start both scripts.
 2.  Observe the UI. Note the color coding:
-      * **\<span style="color:green"\>Green\</span\> (Insert):** New orders being placed.
-      * **\<span style="color:orange"\>Yellow\</span\> (Update):** Order status changing (e.g., to "Shipped"). *Note: We use `updateLookup`, so you see the full document, not just the changed fields.*
-      * **\<span style="color:red"\>Red\</span\> (Delete):** Orders being cancelled.
+      * **Green (Insert):** New orders being placed.
+      * **Yellow (Update):** Order status changing (e.g., to "Shipped"). *Note: We use `updateLookup`, so you see the full document, not just the changed fields.*
+      * **Red (Delete):** Orders being cancelled.
 3.  Click the arrow on any card to expand it and view the **Raw JSON Payload**. This is the actual change event document sent by MongoDB.
 
 ### Demo 2: Resilience with Resume Tokens
