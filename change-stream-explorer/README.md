@@ -4,6 +4,8 @@ A lightweight, real-time visualization tool designed to demonstrate the power of
 
 This single-file application connects to a MongoDB database, watches for changes (Inserts, Updates, Deletes), and pushes them instantly to a web interface using WebSockets. It is designed as an educational sandbox to experiment with **Resume Tokens** and **Aggregation Pipelines**.
 
+![App view](./change-stream-explorer.png)
+
 ## 🚀 Prerequisites
 
 1.  **Node.js** installed.
