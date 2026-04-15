@@ -75,8 +75,9 @@ python generate_data.py
 # Start the app  
 python app.py  
 Then open http://localhost:5050 in your browser. That's it. 🎉
+```
 
-📦 MongoDB Details
+## 📦 MongoDB Details
 Database: sports_betting_demo
 Collection: events
 
@@ -88,6 +89,7 @@ competition	Single field	Filter by competition
 is_featured + kick_off	Compound	Featured events queries
 home_team + away_team + competition	Text	Full-text search
 Sample Document
+```
 {  
   "sport": "Football",  
   "competition": "Premier League",  
@@ -115,9 +117,10 @@ Sample Document
     }  
   ],  
   "is_featured": true  
-}  
+}
+```
 
-🌍 Geospatial Queries
+### 🌍 Geospatial Queries
 The app uses MongoDB's $near operator with the 2dsphere index to find fixtures near a given point:
 ```
 db.events.find({  
