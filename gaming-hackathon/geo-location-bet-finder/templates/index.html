@@ -1,0 +1,1800 @@
+<!-- templates/index.html -->  
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>SportsBet Demo - UK Football & Rugby</title>  
+    <style>  
+        * {  
+            margin: 0;  
+            padding: 0;  
+            box-sizing: border-box;  
+        }  
+  
+        body {  
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;  
+            background: #f0f1f5;  
+            color: #1a1a2e;  
+            min-height: 100vh;  
+        }  
+  
+        /* HEADER */  
+        .header {  
+            background: linear-gradient(135deg, #0b1a6b, #0d2291);  
+            padding: 0;  
+            position: sticky;  
+            top: 0;  
+            z-index: 100;  
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);  
+        }  
+  
+        .header-top {  
+            display: flex;  
+            align-items: center;  
+            justify-content: space-between;  
+            padding: 12px 24px;  
+        }  
+  
+        .logo {  
+            font-size: 28px;  
+            font-weight: 900;  
+            color: #fff;  
+            letter-spacing: -1px;  
+            display: flex;  
+            align-items: center;  
+            gap: 2px;  
+        }  
+  
+        .logo .red {  
+            color: #e3001b;  
+        }  
+  
+        .logo .white {  
+            color: #ffffff;  
+        }  
+  
+        .logo-box {  
+            background: #e3001b;  
+            color: #fff;  
+            padding: 4px 10px;  
+            border-radius: 4px;  
+            font-size: 28px;  
+            font-weight: 900;  
+            margin-right: 2px;  
+            line-height: 1;  
+        }  
+  
+        .header-right {  
+            display: flex;  
+            align-items: center;  
+            gap: 12px;  
+        }  
+  
+        .demo-badge {  
+            background: #e3001b;  
+            color: #fff;  
+            padding: 6px 14px;  
+            border-radius: 4px;  
+            font-size: 11px;  
+            font-weight: 700;  
+            text-transform: uppercase;  
+            letter-spacing: 1px;  
+        }  
+  
+        /* LOCATION SETTINGS BUTTON */  
+        .location-btn {  
+            background: rgba(255,255,255,0.12);  
+            border: 1px solid rgba(255,255,255,0.25);  
+            color: #fff;  
+            padding: 8px 14px;  
+            border-radius: 6px;  
+            font-size: 12px;  
+            font-weight: 600;  
+            cursor: pointer;  
+            display: flex;  
+            align-items: center;  
+            gap: 6px;  
+            transition: all 0.2s;  
+            position: relative;  
+        }  
+  
+        .location-btn:hover {  
+            background: rgba(255,255,255,0.2);  
+            border-color: rgba(255,255,255,0.4);  
+        }  
+  
+        .location-btn .loc-dot {  
+            width: 8px;  
+            height: 8px;  
+            background: #00e676;  
+            border-radius: 50%;  
+            animation: locPulse 2s infinite;  
+        }  
+  
+        @keyframes locPulse {  
+            0%, 100% { opacity: 1; transform: scale(1); }  
+            50% { opacity: 0.5; transform: scale(1.3); }  
+        }  
+  
+        /* LOCATION SETTINGS PANEL */  
+        .location-panel {  
+            display: none;  
+            position: absolute;  
+            top: 100%;  
+            right: 0;  
+            margin-top: 8px;  
+            background: #fff;  
+            border-radius: 10px;  
+            box-shadow: 0 10px 40px rgba(0,0,0,0.25);  
+            width: 320px;  
+            z-index: 300;  
+            overflow: hidden;  
+        }  
+  
+        .location-panel.show {  
+            display: block;  
+        }  
+  
+        .loc-panel-header {  
+            background: #0d2291;  
+            color: #fff;  
+            padding: 14px 18px;  
+            font-size: 14px;  
+            font-weight: 700;  
+            display: flex;  
+            align-items: center;  
+            justify-content: space-between;  
+        }  
+  
+        .loc-panel-close {  
+            background: none;  
+            border: none;  
+            color: rgba(255,255,255,0.7);  
+            font-size: 20px;  
+            cursor: pointer;  
+        }  
+  
+        .loc-panel-close:hover {  
+            color: #fff;  
+        }  
+  
+        .loc-panel-body {  
+            padding: 18px;  
+        }  
+  
+        .loc-field {  
+            margin-bottom: 14px;  
+        }  
+  
+        .loc-field label {  
+            display: block;  
+            font-size: 11px;  
+            font-weight: 700;  
+            color: #888;  
+            text-transform: uppercase;  
+            letter-spacing: 0.5px;  
+            margin-bottom: 6px;  
+        }  
+  
+        .loc-field select,  
+        .loc-field input {  
+            width: 100%;  
+            padding: 10px 12px;  
+            border: 2px solid #e0e0e0;  
+            border-radius: 6px;  
+            font-size: 13px;  
+            color: #333;  
+            outline: none;  
+            transition: border-color 0.2s;  
+        }  
+  
+        .loc-field select:focus,  
+        .loc-field input:focus {  
+            border-color: #0d2291;  
+        }  
+  
+        .loc-field .coord-row {  
+            display: flex;  
+            gap: 8px;  
+        }  
+  
+        .loc-field .coord-row input {  
+            flex: 1;  
+        }  
+  
+        .loc-save-btn {  
+            width: 100%;  
+            padding: 12px;  
+            background: #e3001b;  
+            color: #fff;  
+            border: none;  
+            border-radius: 6px;  
+            font-size: 14px;  
+            font-weight: 700;  
+            cursor: pointer;  
+            transition: background 0.2s;  
+            margin-bottom: 8px;  
+        }  
+  
+        .loc-save-btn:hover {  
+            background: #c8001a;  
+        }  
+  
+        .loc-detect-btn {  
+            width: 100%;  
+            padding: 10px;  
+            background: #fff;  
+            color: #0d2291;  
+            border: 2px solid #0d2291;  
+            border-radius: 6px;  
+            font-size: 13px;  
+            font-weight: 700;  
+            cursor: pointer;  
+            transition: all 0.2s;  
+        }  
+  
+        .loc-detect-btn:hover {  
+            background: #0d2291;  
+            color: #fff;  
+        }  
+  
+        .loc-current {  
+            text-align: center;  
+            padding: 10px;  
+            background: #f5f6fa;  
+            border-radius: 6px;  
+            margin-bottom: 14px;  
+            font-size: 12px;  
+            color: #666;  
+        }  
+  
+        .loc-current strong {  
+            color: #0d2291;  
+        }  
+  
+        /* PROMO BANNER */  
+        .promo-banner {  
+            background: linear-gradient(90deg, #e3001b, #ff1a36);  
+            padding: 10px 24px;  
+            text-align: center;  
+            font-size: 13px;  
+            font-weight: 700;  
+            color: #fff;  
+            letter-spacing: 0.5px;  
+        }  
+  
+        .promo-banner span {  
+            background: #fff;  
+            color: #e3001b;  
+            padding: 2px 8px;  
+            border-radius: 3px;  
+            margin-left: 8px;  
+            font-size: 11px;  
+        }  
+  
+        /* SEARCH BAR */  
+        .search-container {  
+            padding: 14px 24px;  
+            background: #0d2291;  
+        }  
+  
+        .search-input {  
+            width: 100%;  
+            padding: 12px 20px;  
+            background: #fff;  
+            border: 2px solid #ddd;  
+            border-radius: 6px;  
+            color: #1a1a2e;  
+            font-size: 14px;  
+            outline: none;  
+            transition: border-color 0.2s;  
+        }  
+  
+        .search-input:focus {  
+            border-color: #e3001b;  
+        }  
+  
+        .search-input::placeholder {  
+            color: #999;  
+        }  
+  
+        /* NAV TABS */  
+        .nav-tabs {  
+            display: flex;  
+            padding: 0;  
+            background: #0a1660;  
+            gap: 0;  
+            border-bottom: 3px solid #e3001b;  
+        }  
+  
+        .nav-tab {  
+            padding: 14px 28px;  
+            cursor: pointer;  
+            font-size: 14px;  
+            font-weight: 700;  
+            color: rgba(255,255,255,0.6);  
+            border-bottom: 3px solid transparent;  
+            transition: all 0.2s;  
+            user-select: none;  
+            text-transform: uppercase;  
+            letter-spacing: 0.5px;  
+            margin-bottom: -3px;  
+        }  
+  
+        .nav-tab:hover {  
+            color: #fff;  
+            background: rgba(255,255,255,0.05);  
+        }  
+  
+        .nav-tab.active {  
+            color: #fff;  
+            border-bottom-color: #fff;  
+            background: rgba(255,255,255,0.08);  
+        }  
+  
+        .sport-icon {  
+            margin-right: 6px;  
+        }  
+  
+        /* FILTERS */  
+        .filters {  
+            display: flex;  
+            gap: 8px;  
+            padding: 16px 24px;  
+            flex-wrap: wrap;  
+            background: #fff;  
+            border-bottom: 1px solid #e0e0e0;  
+        }  
+  
+        .filter-btn {  
+            padding: 8px 18px;  
+            border-radius: 4px;  
+            border: 2px solid #ddd;  
+            background: #fff;  
+            color: #555;  
+            font-size: 13px;  
+            cursor: pointer;  
+            transition: all 0.2s;  
+            font-weight: 600;  
+        }  
+  
+        .filter-btn:hover {  
+            border-color: #0d2291;  
+            color: #0d2291;  
+        }  
+  
+        .filter-btn.active {  
+            background: #0d2291;  
+            color: #fff;  
+            border-color: #0d2291;  
+            font-weight: 700;  
+        }  
+  
+        /* GEO SEARCH */  
+        .geo-bar {  
+            display: flex;  
+            gap: 8px;  
+            padding: 12px 24px;  
+            align-items: center;  
+            flex-wrap: wrap;  
+            background: #fff;  
+            border-bottom: 1px solid #e0e0e0;  
+        }  
+  
+        .geo-bar label {  
+            font-size: 13px;  
+            color: #555;  
+            font-weight: 700;  
+        }  
+  
+        .geo-select {  
+            padding: 8px 12px;  
+            background: #fff;  
+            border: 2px solid #ddd;  
+            border-radius: 4px;  
+            color: #333;  
+            font-size: 13px;  
+            outline: none;  
+        }  
+  
+        .geo-select:focus {  
+            border-color: #0d2291;  
+        }  
+  
+        .geo-btn {  
+            padding: 8px 18px;  
+            border-radius: 4px;  
+            border: none;  
+            background: #e3001b;  
+            color: #fff;  
+            font-size: 13px;  
+            cursor: pointer;  
+            font-weight: 700;  
+            transition: background 0.2s;  
+        }  
+  
+        .geo-btn:hover {  
+            background: #c8001a;  
+        }  
+  
+        .geo-btn-clear {  
+            padding: 8px 18px;  
+            border-radius: 4px;  
+            border: 2px solid #ddd;  
+            background: #fff;  
+            color: #555;  
+            font-size: 13px;  
+            cursor: pointer;  
+            font-weight: 600;  
+            transition: all 0.2s;  
+        }  
+  
+        .geo-btn-clear:hover {  
+            border-color: #999;  
+        }  
+  
+        /* NEARBY SECTION */  
+        .nearby-section {  
+            max-width: 900px;  
+            margin: 16px auto 0;  
+            padding: 0 24px;  
+        }  
+  
+        .nearby-card {  
+            background: #fff;  
+            border-radius: 10px;  
+            border: 2px solid #0d2291;  
+            overflow: hidden;  
+            box-shadow: 0 2px 12px rgba(13,34,145,0.08);  
+        }  
+  
+        .nearby-header {  
+            background: linear-gradient(135deg, #0d2291, #1535b8);  
+            color: #fff;  
+            padding: 14px 20px;  
+            display: flex;  
+            align-items: center;  
+            justify-content: space-between;  
+            cursor: pointer;  
+            user-select: none;  
+            transition: background 0.2s;  
+        }  
+  
+        .nearby-header:hover {  
+            background: linear-gradient(135deg, #0a1a70, #0d2291);  
+        }  
+  
+        .nearby-header-left {  
+            display: flex;  
+            align-items: center;  
+            gap: 10px;  
+        }  
+  
+        .nearby-header-left h3 {  
+            font-size: 15px;  
+            font-weight: 800;  
+            text-transform: uppercase;  
+            letter-spacing: 0.5px;  
+        }  
+  
+        .nearby-loc-info {  
+            font-size: 11px;  
+            color: rgba(255,255,255,0.6);  
+            font-weight: 500;  
+        }  
+  
+        .nearby-count {  
+            background: #e3001b;  
+            color: #fff;  
+            padding: 3px 10px;  
+            border-radius: 12px;  
+            font-size: 12px;  
+            font-weight: 700;  
+        }  
+  
+        .nearby-toggle {  
+            display: flex;  
+            align-items: center;  
+            gap: 8px;  
+        }  
+  
+        .chevron {  
+            font-size: 18px;  
+            transition: transform 0.3s;  
+            display: inline-block;  
+        }  
+  
+        .chevron.collapsed {  
+            transform: rotate(-90deg);  
+        }  
+  
+        .nearby-body {  
+            max-height: 600px;  
+            overflow-y: auto;  
+            transition: max-height 0.4s ease, padding 0.3s ease;  
+            padding: 12px 16px;  
+        }  
+  
+        .nearby-body.collapsed {  
+            max-height: 0;  
+            padding: 0 16px;  
+            overflow: hidden;  
+        }  
+  
+        .nearby-empty {  
+            text-align: center;  
+            padding: 24px;  
+            color: #999;  
+            font-size: 13px;  
+        }  
+  
+        .nearby-item {  
+            display: flex;  
+            align-items: center;  
+            padding: 12px 14px;  
+            background: #fafafa;  
+            border-radius: 8px;  
+            margin-bottom: 8px;  
+            border: 1px solid #eee;  
+            cursor: pointer;  
+            transition: all 0.15s;  
+            gap: 14px;  
+        }  
+  
+        .nearby-item:hover {  
+            background: #f0f2ff;  
+            border-color: #0d2291;  
+            transform: translateX(2px);  
+        }  
+  
+        .nearby-item:last-child {  
+            margin-bottom: 0;  
+        }  
+  
+        .nearby-sport-icon {  
+            font-size: 24px;  
+            flex-shrink: 0;  
+        }  
+  
+        .nearby-item-info {  
+            flex: 1;  
+            min-width: 0;  
+        }  
+  
+        .nearby-teams {  
+            font-size: 14px;  
+            font-weight: 700;  
+            color: #1a1a2e;  
+            white-space: nowrap;  
+            overflow: hidden;  
+            text-overflow: ellipsis;  
+        }  
+  
+        .nearby-meta {  
+            font-size: 11px;  
+            color: #888;  
+            margin-top: 3px;  
+            display: flex;  
+            align-items: center;  
+            gap: 8px;  
+            flex-wrap: wrap;  
+        }  
+  
+        .nearby-distance {  
+            background: #e3001b;  
+            color: #fff;  
+            padding: 4px 12px;  
+            border-radius: 20px;  
+            font-size: 11px;  
+            font-weight: 700;  
+            flex-shrink: 0;  
+            white-space: nowrap;  
+        }  
+  
+        .nearby-item-status {  
+            padding: 3px 8px;  
+            border-radius: 3px;  
+            font-size: 9px;  
+            font-weight: 800;  
+            text-transform: uppercase;  
+        }  
+  
+        .nearby-item-status.live {  
+            background: #e3001b;  
+            color: #fff;  
+        }  
+  
+        .nearby-item-status.upcoming {  
+            background: #e8f5e9;  
+            color: #2e7d32;  
+        }  
+  
+        .nearby-item-status.completed {  
+            background: #eee;  
+            color: #888;  
+        }  
+  
+        .nearby-item-odds {  
+            display: flex;  
+            gap: 4px;  
+            flex-shrink: 0;  
+        }  
+  
+        .nearby-odd {  
+            background: #fff;  
+            border: 1px solid #ddd;  
+            border-radius: 4px;  
+            padding: 6px 10px;  
+            text-align: center;  
+            min-width: 48px;  
+            transition: all 0.15s;  
+        }  
+  
+        .nearby-odd:hover {  
+            background: #0d2291;  
+            border-color: #0d2291;  
+        }  
+  
+        .nearby-odd:hover .nearby-odd-label {  
+            color: rgba(255,255,255,0.7);  
+        }  
+  
+        .nearby-odd:hover .nearby-odd-value {  
+            color: #fff;  
+        }  
+  
+        .nearby-odd-label {  
+            font-size: 8px;  
+            color: #aaa;  
+            font-weight: 600;  
+            text-transform: uppercase;  
+            display: block;  
+            transition: color 0.15s;  
+        }  
+  
+        .nearby-odd-value {  
+            font-size: 13px;  
+            font-weight: 900;  
+            color: #0d2291;  
+            display: block;  
+            transition: color 0.15s;  
+        }  
+  
+        /* MAIN CONTENT */  
+        .content {  
+            padding: 0 24px 24px;  
+            max-width: 900px;  
+            margin: 0 auto;  
+        }  
+  
+        .section-title {  
+            font-size: 16px;  
+            font-weight: 800;  
+            color: #0d2291;  
+            margin: 20px 0 12px;  
+            display: flex;  
+            align-items: center;  
+            gap: 8px;  
+            text-transform: uppercase;  
+            letter-spacing: 0.3px;  
+        }  
+  
+        .count-badge {  
+            background: #e3001b;  
+            color: #fff;  
+            padding: 2px 10px;  
+            border-radius: 12px;  
+            font-size: 12px;  
+            font-weight: 700;  
+        }  
+  
+        /* EVENT CARD */  
+        .event-card {  
+            background: #fff;  
+            border-radius: 8px;  
+            margin-bottom: 12px;  
+            overflow: hidden;  
+            border: 1px solid #e0e0e0;  
+            transition: box-shadow 0.2s, transform 0.15s;  
+            cursor: pointer;  
+        }  
+  
+        .event-card:hover {  
+            box-shadow: 0 4px 16px rgba(13, 34, 145, 0.12);  
+            transform: translateY(-1px);  
+        }  
+  
+        .event-card.live {  
+            border-left: 5px solid #e3001b;  
+        }  
+  
+        .event-card.featured {  
+            border-left: 5px solid #f5a623;  
+        }  
+  
+        .card-header {  
+            display: flex;  
+            justify-content: space-between;  
+            align-items: center;  
+            padding: 12px 16px 6px;  
+            background: #fafafa;  
+            border-bottom: 1px solid #f0f0f0;  
+        }  
+  
+        .competition-name {  
+            font-size: 11px;  
+            color: #0d2291;  
+            text-transform: uppercase;  
+            letter-spacing: 0.5px;  
+            font-weight: 700;  
+        }  
+  
+        .status-badge {  
+            padding: 4px 12px;  
+            border-radius: 4px;  
+            font-size: 10px;  
+            font-weight: 800;  
+            text-transform: uppercase;  
+            letter-spacing: 0.5px;  
+        }  
+  
+        .status-upcoming {  
+            background: #e8f5e9;  
+            color: #2e7d32;  
+        }  
+  
+        .status-live {  
+            background: #e3001b;  
+            color: #fff;  
+            animation: pulse 2s infinite;  
+        }  
+  
+        .status-completed {  
+            background: #eee;  
+            color: #888;  
+        }  
+  
+        @keyframes pulse {  
+            0%, 100% { opacity: 1; }  
+            50% { opacity: 0.7; }  
+        }  
+  
+        .match-info {  
+            padding: 16px;  
+            display: flex;  
+            align-items: center;  
+            justify-content: center;  
+            gap: 16px;  
+        }  
+  
+        .team {  
+            flex: 1;  
+            text-align: center;  
+        }  
+  
+        .team-name {  
+            font-size: 15px;  
+            font-weight: 800;  
+            color: #1a1a2e;  
+        }  
+  
+        .vs-section {  
+            display: flex;  
+            flex-direction: column;  
+            align-items: center;  
+            min-width: 80px;  
+        }  
+  
+        .score {  
+            font-size: 30px;  
+            font-weight: 900;  
+            color: #0d2291;  
+            letter-spacing: 4px;  
+        }  
+  
+        .vs-text {  
+            font-size: 13px;  
+            color: #bbb;  
+            font-weight: 800;  
+        }  
+  
+        .match-time {  
+            font-size: 12px;  
+            color: #888;  
+            margin-top: 2px;  
+            font-weight: 600;  
+        }  
+  
+        .live-minute {  
+            color: #e3001b;  
+            font-weight: 800;  
+            font-size: 14px;  
+        }  
+  
+        .venue-info {  
+            padding: 0 16px 10px;  
+            font-size: 11px;  
+            color: #999;  
+            text-align: center;  
+            font-weight: 500;  
+        }  
+  
+        .venue-info span {  
+            margin: 0 2px;  
+        }  
+  
+        /* BETTING MARKETS */  
+        .markets {  
+            padding: 8px 16px 16px;  
+            border-top: 1px solid #f0f0f0;  
+            background: #fafafa;  
+        }  
+  
+        .market {  
+            margin-bottom: 10px;  
+        }  
+  
+        .market-name {  
+            font-size: 11px;  
+            color: #888;  
+            margin-bottom: 6px;  
+            font-weight: 700;  
+            text-transform: uppercase;  
+            letter-spacing: 0.3px;  
+        }  
+  
+        .odds-row {  
+            display: flex;  
+            gap: 6px;  
+        }  
+  
+        .odd-btn {  
+            flex: 1;  
+            padding: 10px 6px;  
+            background: #fff;  
+            border: 2px solid #e0e0e0;  
+            border-radius: 4px;  
+            cursor: pointer;  
+            text-align: center;  
+            transition: all 0.15s;  
+            min-width: 0;  
+        }  
+  
+        .odd-btn:hover {  
+            background: #0d2291;  
+            border-color: #0d2291;  
+        }  
+  
+        .odd-btn:hover .odd-label {  
+            color: rgba(255,255,255,0.8);  
+        }  
+  
+        .odd-btn:hover .odd-value {  
+            color: #fff;  
+        }  
+  
+        .odd-label {  
+            font-size: 10px;  
+            color: #888;  
+            display: block;  
+            margin-bottom: 2px;  
+            white-space: nowrap;  
+            overflow: hidden;  
+            text-overflow: ellipsis;  
+            transition: color 0.15s;  
+        }  
+  
+        .odd-value {  
+            font-size: 15px;  
+            font-weight: 900;  
+            color: #0d2291;  
+            transition: color 0.15s;  
+        }  
+  
+        /* LOADING */  
+        .loading {  
+            text-align: center;  
+            padding: 60px;  
+            color: #999;  
+        }  
+  
+        .spinner {  
+            width: 40px;  
+            height: 40px;  
+            border: 4px solid #e0e0e0;  
+            border-top-color: #e3001b;  
+            border-radius: 50%;  
+            animation: spin 0.8s linear infinite;  
+            margin: 0 auto 16px;  
+        }  
+  
+        @keyframes spin {  
+            to { transform: rotate(360deg); }  
+        }  
+  
+        .no-events {  
+            text-align: center;  
+            padding: 40px;  
+            color: #999;  
+            font-size: 14px;  
+            font-weight: 600;  
+        }  
+  
+        /* DETAIL MODAL */  
+        .modal-overlay {  
+            display: none;  
+            position: fixed;  
+            top: 0;  
+            left: 0;  
+            width: 100%;  
+            height: 100%;  
+            background: rgba(0,0,0,0.5);  
+            z-index: 200;  
+            justify-content: center;  
+            align-items: center;  
+        }  
+  
+        .modal-overlay.show {  
+            display: flex;  
+        }  
+  
+        .modal {  
+            background: #fff;  
+            border-radius: 12px;  
+            width: 90%;  
+            max-width: 500px;  
+            max-height: 80vh;  
+            overflow-y: auto;  
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);  
+        }  
+  
+        .modal-header-bar {  
+            padding: 20px;  
+            border-bottom: 1px solid #eee;  
+            display: flex;  
+            justify-content: space-between;  
+            align-items: center;  
+            background: #0d2291;  
+            color: #fff;  
+            border-radius: 12px 12px 0 0;  
+        }  
+  
+        .modal-header-bar span {  
+            font-weight: 800;  
+            text-transform: uppercase;  
+            letter-spacing: 0.5px;  
+        }  
+  
+        .modal-close {  
+            background: none;  
+            border: none;  
+            color: rgba(255,255,255,0.7);  
+            font-size: 24px;  
+            cursor: pointer;  
+            transition: color 0.2s;  
+        }  
+  
+        .modal-close:hover {  
+            color: #fff;  
+        }  
+  
+        .modal-body {  
+            padding: 20px;  
+        }  
+  
+        .modal-venue {  
+            text-align: center;  
+            padding: 14px;  
+            background: #f5f6fa;  
+            border-radius: 8px;  
+            margin-bottom: 16px;  
+            font-size: 13px;  
+            color: #555;  
+            border: 1px solid #e8e8e8;  
+        }  
+  
+        .modal-coords {  
+            font-size: 11px;  
+            color: #999;  
+            margin-top: 4px;  
+            font-family: monospace;  
+        }  
+  
+        /* FOOTER */  
+        .footer {  
+            text-align: center;  
+            padding: 24px;  
+            color: #bbb;  
+            font-size: 11px;  
+            font-weight: 600;  
+            background: #0d2291;  
+            margin-top: 40px;  
+        }  
+  
+        .footer a {  
+            color: #fff;  
+            text-decoration: none;  
+        }  
+  
+        /* OVERLAY for closing location panel */  
+        .page-overlay {  
+            display: none;  
+            position: fixed;  
+            top: 0; left: 0; right: 0; bottom: 0;  
+            z-index: 99;  
+        }  
+  
+        .page-overlay.show {  
+            display: block;  
+        }  
+  
+        /* RESPONSIVE */  
+        @media (max-width: 600px) {  
+            .team-name {  
+                font-size: 13px;  
+            }  
+  
+            .score {  
+                font-size: 24px;  
+            }  
+  
+            .odd-btn {  
+                padding: 8px 4px;  
+            }  
+  
+            .odd-value {  
+                font-size: 13px;  
+            }  
+  
+            .header-top {  
+                padding: 10px 16px;  
+                flex-wrap: wrap;  
+                gap: 8px;  
+            }  
+  
+            .logo {  
+                font-size: 22px;  
+            }  
+  
+            .logo-box {  
+                font-size: 22px;  
+            }  
+  
+            .content, .filters, .search-container, .geo-bar, .nearby-section {  
+                padding-left: 16px;  
+                padding-right: 16px;  
+            }  
+  
+            .nav-tab {  
+                padding: 12px 16px;  
+                font-size: 12px;  
+            }  
+  
+            .demo-badge {  
+                font-size: 9px;  
+                padding: 4px 8px;  
+            }  
+  
+            .promo-banner {  
+                font-size: 11px;  
+            }  
+  
+            .location-panel {  
+                width: 290px;  
+                right: -8px;  
+            }  
+  
+            .nearby-item {  
+                flex-wrap: wrap;  
+            }  
+  
+            .nearby-item-odds {  
+                width: 100%;  
+                margin-top: 8px;  
+            }  
+  
+            .nearby-odd {  
+                flex: 1;  
+            }  
+  
+            .header-right {  
+                gap: 8px;  
+            }  
+        }  
+    </style>  
+</head>  
+<body>  
+  
+    <!-- PAGE OVERLAY to close panels -->  
+    <div class="page-overlay" id="pageOverlay" onclick="closeLocationPanel()"></div>  
+  
+    <!-- HEADER -->  
+    <div class="header">  
+        <div class="header-top">  
+            <div class="logo">  
+                <span class="logo-box">Sports</span><span class="white">Bet</span><span class="red">UK</span>  
+            </div>  
+            <div class="header-right">  
+                <div class="demo-badge">⚠️ Demo Only</div>  
+                <div style="position:relative;">  
+                    <button class="location-btn" id="locationBtn" onclick="toggleLocationPanel()">  
+                        <span class="loc-dot"></span>  
+                        <span id="locationBtnText">📍 Manchester</span>  
+                        <span style="font-size:10px;">▼</span>  
+                    </button>  
+                    <!-- LOCATION SETTINGS PANEL -->  
+                    <div class="location-panel" id="locationPanel">  
+                        <div class="loc-panel-header">  
+                            <span>📍 Your Location</span>  
+                            <button class="loc-panel-close" onclick="closeLocationPanel()">&times;</button>  
+                        </div>  
+                        <div class="loc-panel-body">  
+                            <div class="loc-current">  
+                                Currently set to: <strong id="currentLocName">Manchester City Centre</strong><br>  
+                                <span id="currentLocCoords" style="font-family:monospace;font-size:10px;color:#999;">53.4808°N, 2.2426°W</span>  
+                            </div>  
+  
+                            <div class="loc-field">  
+                                <label>Quick Select City</label>  
+                                <select id="locCitySelect" onchange="onCitySelect()">  
+                                    <option value="">-- Choose a city --</option>  
+                                    <option value="-2.2426,53.4808,Manchester City Centre" selected>Manchester</option>  
+                                    <option value="-0.1278,51.5074,London Central">London</option>  
+                                    <option value="-2.9916,53.4084,Liverpool City Centre">Liverpool</option>  
+                                    <option value="-1.8904,52.4862,Birmingham City Centre">Birmingham</option>  
+                                    <option value="-1.6178,54.9783,Newcastle City Centre">Newcastle</option>  
+                                    <option value="-1.1397,52.6369,Leicester City Centre">Leicester</option>  
+                                    <option value="-2.5879,51.4545,Bristol City Centre">Bristol</option>  
+                                    <option value="-3.5339,50.7184,Exeter City Centre">Exeter</option>  
+                                    <option value="-1.2578,51.7520,Oxford City Centre">Oxford</option>  
+                                    <option value="-2.3571,51.3812,Bath City Centre">Bath</option>  
+                                    <option value="-0.1067,50.8616,Brighton City Centre">Brighton</option>  
+                                    <option value="-1.3908,50.9058,Southampton City Centre">Southampton</option>  
+                                </select>  
+                            </div>  
+  
+                            <div class="loc-field">  
+                                <label>Or Enter Coordinates Manually</label>  
+                                <div class="coord-row">  
+                                    <input type="number" step="any" id="locLat" placeholder="Latitude" value="53.4808">  
+                                    <input type="number" step="any" id="locLng" placeholder="Longitude" value="-2.2426">  
+                                </div>  
+                            </div>  
+  
+                            <div class="loc-field">  
+                                <label>Search Radius</label>  
+                                <select id="locRadius">  
+                                    <option value="10000">10 km</option>  
+                                    <option value="25000">25 km</option>  
+                                    <option value="50000" selected>50 km</option>  
+                                    <option value="100000">100 km</option>  
+                                    <option value="200000">200 km</option>  
+                                </select>  
+                            </div>  
+  
+                            <button class="loc-save-btn" onclick="saveLocation()">💾 Save & Update Nearby</button>  
+                            <button class="loc-detect-btn" onclick="detectLocation()">📡 Use My Current Location</button>  
+                        </div>  
+                    </div>  
+                </div>  
+            </div>  
+        </div>  
+  
+        <!-- SEARCH -->  
+        <div class="search-container">  
+            <input type="text" class="search-input" id="searchInput" placeholder="🔍 Search teams, competitions...">  
+        </div>  
+  
+        <!-- SPORT TABS -->  
+        <div class="nav-tabs">  
+            <div class="nav-tab active" data-sport="all" onclick="setSport('all', this)">  
+                <span class="sport-icon">🏟️</span>All Sports  
+            </div>  
+            <div class="nav-tab" data-sport="Football" onclick="setSport('Football', this)">  
+                <span class="sport-icon">⚽</span>Football  
+            </div>  
+            <div class="nav-tab" data-sport="Rugby" onclick="setSport('Rugby', this)">  
+                <span class="sport-icon">🏉</span>Rugby  
+            </div>  
+        </div>  
+    </div>  
+  
+    <!-- PROMO BANNER -->  
+    <div class="promo-banner">  
+        🎉 Welcome Offer: Get up to £50 in Free Bets when you sign up! <span>DEMO ONLY</span>  
+    </div>  
+  
+    <!-- NEARBY FIXTURES SECTION -->  
+    <div class="nearby-section">  
+        <div class="nearby-card">  
+            <div class="nearby-header" onclick="toggleNearby()">  
+                <div class="nearby-header-left">  
+                    <span style="font-size:20px;">📍</span>  
+                    <div>  
+                        <h3>Near You</h3>  
+                        <div class="nearby-loc-info" id="nearbyLocInfo">Based on: Manchester City Centre (50km radius)</div>  
+                    </div>  
+                </div>  
+                <div class="nearby-toggle">  
+                    <span class="nearby-count" id="nearbyCount">0</span>  
+                    <span class="chevron" id="nearbyChevron">▼</span>  
+                </div>  
+            </div>  
+            <div class="nearby-body" id="nearbyBody">  
+                <div class="nearby-empty">  
+                    <div class="spinner"></div>  
+                    Loading nearby fixtures...  
+                </div>  
+            </div>  
+        </div>  
+    </div>  
+  
+    <!-- STATUS FILTERS -->  
+    <div class="filters">  
+        <div class="filter-btn active" data-status="all" onclick="setStatus('all', this)">All Events</div>  
+        <div class="filter-btn" data-status="live" onclick="setStatus('live', this)">🔴 Live</div>  
+        <div class="filter-btn" data-status="upcoming" onclick="setStatus('upcoming', this)">⏰ Upcoming</div>  
+        <div class="filter-btn" data-status="completed" onclick="setStatus('completed', this)">✅ Completed</div>  
+        <div class="filter-btn" data-status="featured" onclick="setStatus('featured', this)">⭐ Featured</div>  
+    </div>  
+  
+    <!-- GEO SEARCH -->  
+    <div class="geo-bar">  
+        <label>📍 Search by city:</label>  
+        <select class="geo-select" id="geoCity">  
+            <option value="">-- Select City --</option>  
+            <option value="-0.1278,51.5074">London</option>  
+            <option value="-2.2426,53.4808">Manchester</option>  
+            <option value="-2.9916,53.4084">Liverpool</option>  
+            <option value="-1.8904,52.4862">Birmingham</option>  
+            <option value="-1.6178,54.9783">Newcastle</option>  
+            <option value="-1.1397,52.6369">Leicester</option>  
+            <option value="-2.5879,51.4545">Bristol</option>  
+            <option value="-3.5339,50.7184">Exeter</option>  
+        </select>  
+        <select class="geo-select" id="geoDistance">  
+            <option value="25000">25 km</option>  
+            <option value="50000" selected>50 km</option>  
+            <option value="100000">100 km</option>  
+            <option value="200000">200 km</option>  
+        </select>  
+        <button class="geo-btn" onclick="searchNearby()">Search</button>  
+        <button class="geo-btn-clear" onclick="clearGeo()">Clear</button>  
+    </div>  
+  
+    <!-- EVENTS LIST -->  
+    <div class="content" id="eventsContainer">  
+        <div class="loading">  
+            <div class="spinner"></div>  
+            Loading events...  
+        </div>  
+    </div>  
+  
+    <!-- FOOTER -->  
+    <div class="footer">  
+        ⚠️ This is a <strong>DEMO APPLICATION</strong> for educational purposes only. No real money or betting is involved.<br>  
+        Built with MongoDB, Flask & ❤️  
+    </div>  
+  
+    <!-- EVENT DETAIL MODAL -->  
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">  
+        <div class="modal" id="modalContent">  
+            <div class="modal-header-bar">  
+                <span>Event Details</span>  
+                <button class="modal-close" onclick="closeModal()">&times;</button>  
+            </div>  
+            <div class="modal-body" id="modalBody">  
+            </div>  
+        </div>  
+    </div>  
+  
+    <script>  
+        // ============================================================  
+        // STATE  
+        // ============================================================  
+        let currentSport = 'all';  
+        let currentStatus = 'all';  
+        let allEvents = [];  
+        let isGeoSearch = false;  
+        let nearbyCollapsed = false;  
+  
+        // User location - default Manchester City Centre  
+        let userLocation = {  
+            lat: 53.4808,  
+            lng: -2.2426,  
+            name: 'Manchester City Centre',  
+            radius: 50000  
+        };  
+  
+        // ============================================================  
+        // INIT  
+        // ============================================================  
+        document.addEventListener('DOMContentLoaded', () => {  
+            loadEvents();  
+            loadNearbyEvents();  
+        });  
+  
+        // ============================================================  
+        // LOCATION SETTINGS PANEL  
+        // ============================================================  
+        function toggleLocationPanel() {  
+            const panel = document.getElementById('locationPanel');  
+            const overlay = document.getElementById('pageOverlay');  
+            if (panel.classList.contains('show')) {  
+                closeLocationPanel();  
+            } else {  
+                panel.classList.add('show');  
+                overlay.classList.add('show');  
+            }  
+        }  
+  
+        function closeLocationPanel() {  
+            document.getElementById('locationPanel').classList.remove('show');  
+            document.getElementById('pageOverlay').classList.remove('show');  
+        }  
+  
+        function onCitySelect() {  
+            const val = document.getElementById('locCitySelect').value;  
+            if (val) {  
+                const parts = val.split(',');  
+                document.getElementById('locLng').value = parts[0];  
+                document.getElementById('locLat').value = parts[1];  
+            }  
+        }  
+  
+        function saveLocation() {  
+            const lat = parseFloat(document.getElementById('locLat').value);  
+            const lng = parseFloat(document.getElementById('locLng').value);  
+            const radius = parseInt(document.getElementById('locRadius').value);  
+  
+            if (isNaN(lat) || isNaN(lng)) {  
+                alert('Please enter valid coordinates');  
+                return;  
+            }  
+  
+            // Get city name  
+            const select = document.getElementById('locCitySelect');  
+            let name = 'Custom Location';  
+            if (select.value) {  
+                const parts = select.value.split(',');  
+                name = parts[2] || 'Custom Location';  
+            }  
+  
+            userLocation = { lat, lng, name, radius };  
+  
+            // Update displays  
+            document.getElementById('currentLocName').textContent = name;  
+            document.getElementById('currentLocCoords').textContent = `${lat.toFixed(4)}°N, ${Math.abs(lng).toFixed(4)}°${lng < 0 ? 'W' : 'E'}`;  
+            document.getElementById('locationBtnText').textContent = `📍 ${name.split(' ')[0]}`;  
+  
+            const radiusKm = (radius / 1000).toFixed(0);  
+            document.getElementById('nearbyLocInfo').textContent = `Based on: ${name} (${radiusKm}km radius)`;  
+  
+            closeLocationPanel();  
+            loadNearbyEvents();  
+        }  
+  
+        function detectLocation() {  
+            if (!navigator.geolocation) {  
+                alert('Geolocation is not supported by your browser');  
+                return;  
+            }  
+  
+            const btn = document.querySelector('.loc-detect-btn');  
+            btn.textContent = '📡 Detecting...';  
+            btn.disabled = true;  
+  
+            navigator.geolocation.getCurrentPosition(  
+                (pos) => {  
+                    document.getElementById('locLat').value = pos.coords.latitude.toFixed(6);  
+                    document.getElementById('locLng').value = pos.coords.longitude.toFixed(6);  
+                    document.getElementById('locCitySelect').value = '';  
+                    btn.textContent = '✅ Detected! Click Save.';  
+                    setTimeout(() => {  
+                        btn.textContent = '📡 Use My Current Location';  
+                        btn.disabled = false;  
+                    }, 2000);  
+                },  
+                (err) => {  
+                    alert('Could not detect location: ' + err.message);  
+                    btn.textContent = '📡 Use My Current Location';  
+                    btn.disabled = false;  
+                }  
+            );  
+        }  
+  
+        // ============================================================  
+        // NEARBY SECTION  
+        // ============================================================  
+        function toggleNearby() {  
+            nearbyCollapsed = !nearbyCollapsed;  
+            const body = document.getElementById('nearbyBody');  
+            const chevron = document.getElementById('nearbyChevron');  
+  
+            if (nearbyCollapsed) {  
+                body.classList.add('collapsed');  
+                chevron.classList.add('collapsed');  
+            } else {  
+                body.classList.remove('collapsed');  
+                chevron.classList.remove('collapsed');  
+            }  
+        }  
+  
+        async function loadNearbyEvents() {  
+            const container = document.getElementById('nearbyBody');  
+            container.innerHTML = '<div class="nearby-empty"><div class="spinner"></div>Loading nearby fixtures...</div>';  
+  
+            try {  
+                const res = await fetch(`/api/events/nearby?lng=${userLocation.lng}&lat=${userLocation.lat}&max_distance=${userLocation.radius}`);  
+                const events = await res.json();  
+  
+                document.getElementById('nearbyCount').textContent = events.length;  
+  
+                if (events.length === 0) {  
+                    container.innerHTML = '<div class="nearby-empty">No fixtures found near your location. Try increasing the search radius in settings.</div>';  
+                    return;  
+                }  
+  
+                // Calculate approximate distance for each event  
+                let html = '';  
+                events.forEach(event => {  
+                    const coords = event.venue.location.coordinates;  
+                    const dist = haversineDistance(userLocation.lat, userLocation.lng, coords[1], coords[0]);  
+                    const distStr = dist < 1 ? `${(dist * 1000).toFixed(0)}m` : `${dist.toFixed(1)}km`;  
+  
+                    const sportIcon = event.sport === 'Football' ? '⚽' : '🏉';  
+                    const id = event._id?.$oid || event._id;  
+                    const kickOff = new Date(event.kick_off?.$date || event.kick_off);  
+                    const dateStr = kickOff.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });  
+                    const timeStr = kickOff.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });  
+  
+                    let statusHtml = '';  
+                    if (event.status === 'live') {  
+                        statusHtml = `<span class="nearby-item-status live">● LIVE ${event.current_minute ? event.current_minute + "'" : ''}</span>`;  
+                    } else if (event.status === 'upcoming') {  
+                        statusHtml = `<span class="nearby-item-status upcoming">${dateStr} ${timeStr}</span>`;  
+                    } else {  
+                        let scoreText = event.score ? `${event.score.home}-${event.score.away}` : '';  
+                        statusHtml = `<span class="nearby-item-status completed">FT ${scoreText}</span>`;  
+                    }  
+  
+                    // Quick odds  
+                    const market = event.markets?.[0];  
+                    let oddsHtml = '';  
+                    if (market && market.selections) {  
+                        oddsHtml = `<div class="nearby-item-odds">`;  
+                        market.selections.forEach(s => {  
+                            oddsHtml += `  
+                                <div class="nearby-odd" onclick="event.stopPropagation()">  
+                                    <span class="nearby-odd-label">${s.label || s.name}</span>  
+                                    <span class="nearby-odd-value">${s.odds.toFixed(2)}</span>  
+                                </div>`;  
+                        });  
+                        oddsHtml += '</div>';  
+                    }  
+  
+                    html += `  
+                        <div class="nearby-item" onclick="openModal('${id}')">  
+                            <div class="nearby-sport-icon">${sportIcon}</div>  
+                            <div class="nearby-item-info">  
+                                <div class="nearby-teams">${event.home_team} vs ${event.away_team}</div>  
+                                <div class="nearby-meta">  
+                                    ${statusHtml}  
+                                    <span>🏟️ ${event.venue.name}</span>  
+                                </div>  
+                            </div>  
+                            <div class="nearby-distance">${distStr} away</div>  
+                            ${oddsHtml}  
+                        </div>  
+                    `;  
+                });  
+  
+                container.innerHTML = html;  
+  
+            } catch (err) {  
+                console.error(err);  
+                container.innerHTML = '<div class="nearby-empty">Error loading nearby events.</div>';  
+            }  
+        }  
+  
+        // Haversine formula to calculate distance in km  
+        function haversineDistance(lat1, lon1, lat2, lon2) {  
+            const R = 6371;  
+            const dLat = (lat2 - lat1) * Math.PI / 180;  
+            const dLon = (lon2 - lon1) * Math.PI / 180;  
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +  
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *  
+                      Math.sin(dLon/2) * Math.sin(dLon/2);  
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));  
+            return R * c;  
+        }  
+  
+        // ============================================================  
+        // DEBOUNCED SEARCH  
+        // ============================================================  
+        let searchTimeout;  
+        document.getElementById('searchInput').addEventListener('input', (e) => {  
+            clearTimeout(searchTimeout);  
+            searchTimeout = setTimeout(() => {  
+                const q = e.target.value.trim();  
+                if (q.length > 1) {  
+                    searchEvents(q);  
+                } else {  
+                    loadEvents();  
+                }  
+            }, 300);  
+        });  
+  
+        // ============================================================  
+        // LOAD EVENTS  
+        // ============================================================  
+        async function loadEvents() {  
+            isGeoSearch = false;  
+            let url = '/api/events?';  
+            const params = [];  
+  
+            if (currentSport !== 'all') params.push(`sport=${currentSport}`);  
+            if (currentStatus === 'featured') {  
+                params.push('featured=true');  
+            } else if (currentStatus !== 'all') {  
+                params.push(`status=${currentStatus}`);  
+            }  
+  
+            url += params.join('&');  
+  
+            try {  
+                const res = await fetch(url);  
+                allEvents = await res.json();  
+                renderEvents(allEvents);  
+            } catch (err) {  
+                console.error(err);  
+            }  
+        }  
+  
+        // SEARCH EVENTS  
+        async function searchEvents(q) {  
+            try {  
+                const res = await fetch(`/api/events/search?q=${encodeURIComponent(q)}`);  
+                const events = await res.json();  
+                renderEvents(events);  
+            } catch (err) {  
+                console.error(err);  
+            }  
+        }  
+  
+        // GEO SEARCH (main list override)  
+        async function searchNearby() {  
+            const city = document.getElementById('geoCity').value;  
+            if (!city) {  
+                alert('Please select a city');  
+                return;  
+            }  
+            const [lng, lat] = city.split(',').map(Number);  
+            const dist = document.getElementById('geoDistance').value;  
+  
+            try {  
+                const res = await fetch(`/api/events/nearby?lng=${lng}&lat=${lat}&max_distance=${dist}`);  
+                const events = await res.json();  
+                isGeoSearch = true;  
+                renderEvents(events);  
+            } catch (err) {  
+                console.error(err);  
+            }  
+        }  
+  
+        function clearGeo() {  
+            document.getElementById('geoCity').value = '';  
+            isGeoSearch = false;  
+            loadEvents();  
+        }  
+  
+        // SET SPORT  
+        function setSport(sport, el) {  
+            currentSport = sport;  
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));  
+            el.classList.add('active');  
+            loadEvents();  
+        }  
+  
+        // SET STATUS  
+        function setStatus(status, el) {  
+            currentStatus = status;  
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));  
+            el.classList.add('active');  
+            loadEvents();  
+        }  
+  
+        // ============================================================  
+        // RENDER EVENTS  
+        // ============================================================  
+        function renderEvents(events) {  
+            const container = document.getElementById('eventsContainer');  
+  
+            if (!events || events.length === 0) {  
+                container.innerHTML = '<div class="no-events">No events found matching your criteria</div>';  
+                return;  
+            }  
+  
+            const live = events.filter(e => e.status === 'live');  
+            const upcoming = events.filter(e => e.status === 'upcoming');  
+            const completed = events.filter(e => e.status === 'completed');  
+  
+            let html = '';  
+  
+            if (isGeoSearch) {  
+                html += `<div class="section-title">📍 Nearby Events <span class="count-badge">${events.length}</span></div>`;  
+                events.forEach(e => html += renderCard(e));  
+            } else {  
+                if (live.length > 0) {  
+                    html += `<div class="section-title">🔴 Live Now <span class="count-badge">${live.length}</span></div>`;  
+                    live.forEach(e => html += renderCard(e));  
+                }  
+                if (upcoming.length > 0) {  
+                    html += `<div class="section-title">⏰ Upcoming <span class="count-badge">${upcoming.length}</span></div>`;  
+                    upcoming.forEach(e => html += renderCard(e));  
+                }  
+                if (completed.length > 0) {  
+                    html += `<div class="section-title">✅ Completed <span class="count-badge">${completed.length}</span></div>`;  
+                    completed.forEach(e => html += renderCard(e));  
+                }  
+            }  
+  
+            container.innerHTML = html;  
+        }  
+  
+        // RENDER CARD  
+        function renderCard(event) {  
+            const id = event._id?.$oid || event._id;  
+            const sportIcon = event.sport === 'Football' ? '⚽' : '🏉';  
+            const statusClass = `status-${event.status}`;  
+            const cardClass = event.status === 'live' ? 'live' : (event.is_featured ? 'featured' : '');  
+            const kickOff = new Date(event.kick_off?.$date || event.kick_off);  
+            const dateStr = kickOff.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });  
+            const timeStr = kickOff.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });  
+  
+            let vsContent = '';  
+            if (event.score) {  
+                vsContent = `<div class="score">${event.score.home} - ${event.score.away}</div>`;  
+                if (event.current_minute) {  
+                    vsContent += `<div class="match-time"><span class="live-minute">${event.current_minute}'</span></div>`;  
+                }  
+            } else {  
+                vsContent = `  
+                    <div class="vs-text">VS</div>  
+                    <div class="match-time">${dateStr}</div>  
+                    <div class="match-time">${timeStr}</div>  
+                `;  
+            }  
+  
+            const market = event.markets?.[0];  
+            let oddsHtml = '';  
+            if (market) {  
+                oddsHtml = `  
+                    <div class="markets">  
+                        <div class="market">  
+                            <div class="market-name">${market.market_name}</div>  
+                            <div class="odds-row">  
+                                ${market.selections.map(s => `  
+                                    <div class="odd-btn" onclick="event.stopPropagation()">  
+                                        <span class="odd-label">${s.label || s.name}</span>  
+                                        <span class="odd-value">${s.odds.toFixed(2)}</span>  
+                                    </div>  
+                                `).join('')}  
+                            </div>  
+                        </div>  
+                    </div>  
+                `;  
+            }  
+  
+            return `  
+                <div class="event-card ${cardClass}" onclick="openModal('${id}')">  
+                    <div class="card-header">  
+                        <span class="competition-name">${sportIcon} ${event.competition}</span>  
+                        <span class="status-badge ${statusClass}">${event.status === 'live' ? '● LIVE' : event.status.toUpperCase()}</span>  
+                    </div>  
+                    <div class="match-info">  
+                        <div class="team">  
+                            <div class="team-name">${event.home_team}</div>  
+                        </div>  
+                        <div class="vs-section">  
+                            ${vsContent}  
+                        </div>  
+                        <div class="team">  
+                            <div class="team-name">${event.away_team}</div>  
+                        </div>  
+                    </div>  
+                    <div class="venue-info">  
+                        📍 <span>${event.venue.name}</span> • <span>${event.venue.city}</span>  
+                    </div>  
+                    ${oddsHtml}  
+                </div>  
+            `;  
+        }  
+  
+        // ============================================================  
+        // MODAL  
+        // ============================================================  
+        async function openModal(id) {  
+            try {  
+                const res = await fetch(`/api/events/${id}`);  
+                const event = await res.json();  
+  
+                const sportIcon = event.sport === 'Football' ? '⚽' : '🏉';  
+                const coords = event.venue.location.coordinates;  
+                const kickOff = new Date(event.kick_off?.$date || event.kick_off);  
+  
+                // Distance from user  
+                const dist = haversineDistance(userLocation.lat, userLocation.lng, coords[1], coords[0]);  
+                const distStr = dist < 1 ? `${(dist * 1000).toFixed(0)}m` : `${dist.toFixed(1)}km`;  
+  
+                let scoreHtml = '';  
+                if (event.score) {  
+                    scoreHtml = `  
+                        <div style="text-align:center;margin:16px 0;">  
+                            <div class="score">${event.score.home} - ${event.score.away}</div>  
+                            ${event.current_minute ? `<div class="live-minute">${event.current_minute}'</div>` : ''}  
+                        </div>  
+                    `;  
+                }  
+  
+                let marketsHtml = event.markets.map(m => `  
+                    <div class="market">  
+                        <div class="market-name">${m.market_name}</div>  
+                        <div class="odds-row">  
+                            ${m.selections.map(s => `  
+                                <div class="odd-btn">  
+                                    <span class="odd-label">${s.label || s.name}</span>  
+                                    <span class="odd-value">${s.odds.toFixed(2)}</span>  
+                                </div>  
+                            `).join('')}  
+                        </div>  
+                    </div>  
+                `).join('');  
+  
+                document.getElementById('modalBody').innerHTML = `  
+                    <div style="text-align:center;margin-bottom:12px;">  
+                        <span class="competition-name">${sportIcon} ${event.competition}</span>  
+                    </div>  
+                    <div class="match-info">  
+                        <div class="team"><div class="team-name">${event.home_team}</div></div>  
+                        <div class="vs-section">  
+                            ${scoreHtml || '<div class="vs-text">VS</div>'}  
+                        </div>  
+                        <div class="team"><div class="team-name">${event.away_team}</div></div>  
+                    </div>  
+                    <div style="text-align:center;color:#888;font-size:13px;margin:8px 0;font-weight:600;">  
+                        🕐 ${kickOff.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} at ${kickOff.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}  
+                    </div>  
+                    <div class="modal-venue">  
+                        🏟️ ${event.venue.name}, ${event.venue.city}  
+                        <div class="modal-coords">📍 Lat: ${coords[1].toFixed(4)}, Lng: ${coords[0].toFixed(4)}</div>  
+                        <div style="margin-top:6px;font-weight:700;color:#e3001b;font-size:12px;">📏 ${distStr} from your location</div>  
+                    </div>  
+                    <div class="section-title" style="margin-top:16px;font-size:14px;">All Markets</div>  
+                    <div class="markets" style="padding:0;background:none;border:none;">  
+                        ${marketsHtml}  
+                    </div>  
+                `;  
+  
+                document.getElementById('modalOverlay').classList.add('show');  
+            } catch (err) {  
+                console.error(err);  
+            }  
+        }  
+  
+        function closeModal(e) {  
+            if (!e || e.target === document.getElementById('modalOverlay')) {  
+                document.getElementById('modalOverlay').classList.remove('show');  
+            }  
+        }  
+  
+        document.addEventListener('keydown', (e) => {  
+            if (e.key === 'Escape') {  
+                closeModal();  
+                closeLocationPanel();  
+            }  
+        });  
+    </script>  
+</body>  
+</html>  
